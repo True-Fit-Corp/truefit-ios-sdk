@@ -18,14 +18,17 @@ on:
 
 # Surface version + correlation in the run title so the GitLab dispatcher can
 # find and poll this exact run.
-run-name: "ios-release ${{ github.event.client_payload.version }} (${{ github.event.client_payload.correlation }})"
+run-name: 'ios-release ${{ github.event.client_payload.version }} (${{ github.event.client_payload.correlation }})'
 
 permissions:
-  contents: write        # create the release, push the Package.swift commit + tag
+  contents: write # create the release, push the Package.swift commit + tag
 
 jobs:
   build-and-publish:
-    runs-on: macos-14
+    # macos-15 ships Xcode 16.x — matches the local dev toolchain, so a build
+    # that passes on a maintainer's Mac (Xcode 16.x) also passes here. (Xcode 15.x
+    # is stricter, e.g. it rejects trailing commas in Package.swift.)
+    runs-on: macos-15
     env:
       VERSION: ${{ github.event.client_payload.version }}
       SRC_URL: ${{ github.event.client_payload.src_url }}
@@ -49,8 +52,12 @@ jobs:
           # archive root is `ios-sdk/`
           test -f src/ios-sdk/scripts/publish-ios.sh
 
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
+      - name: Select newest Xcode 16
+        run: |
+          set -euo pipefail
+          latest="$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1)"
+          if [ -n "$latest" ]; then sudo xcode-select -s "$latest/Contents/Developer"; fi
+          xcodebuild -version
 
       - name: Build & publish (XCFramework -> release + SPM + CocoaPods)
         working-directory: src/ios-sdk
