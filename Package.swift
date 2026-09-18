@@ -7,11 +7,11 @@
 // checksummed XCFramework — it contains NO SDK source. The module is
 // `TrueFitRecommendation` (`import TrueFitRecommendation`).
 //
-// The release job fills in 2.0.2 and 746f6c480c9853a1fdf814e104d1e9d50743ee3ec894a80058cb788b6c96de03 (the checksum printed
+// The release job fills in 2.0.4 and 5e59fb718d5cd175b4e226b73ffa680e9d48fbf0ea327b6caa8d90b9505fd2dc (the checksum printed
 // by scripts/build-xcframework.sh), writes the result as `Package.swift` in the
-// public repo, commits it, and tags the commit `2.0.2`. Consumers then:
+// public repo, commits it, and tags the commit `2.0.4`. Consumers then:
 //
-//   .package(url: "https://github.com/True-Fit-Corp/truefit-ios-sdk.git", from: "2.0.2")
+//   .package(url: "https://github.com/True-Fit-Corp/truefit-ios-sdk.git", from: "2.0.4")
 //
 // NOTE: no trailing commas in call-argument lists — Swift < 6 (Xcode 15.x)
 // rejects them in the manifest, and consumers may be on older toolchains.
@@ -31,8 +31,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "TrueFitRecommendation",
-            url: "https://github.com/True-Fit-Corp/truefit-ios-sdk/releases/download/2.0.2/TrueFitRecommendation.xcframework.zip",
-            checksum: "746f6c480c9853a1fdf814e104d1e9d50743ee3ec894a80058cb788b6c96de03"
+            url: "https://github.com/True-Fit-Corp/truefit-ios-sdk/releases/download/2.0.4/TrueFitRecommendation.xcframework.zip",
+            checksum: "5e59fb718d5cd175b4e226b73ffa680e9d48fbf0ea327b6caa8d90b9505fd2dc"
         )
     ]
 )
